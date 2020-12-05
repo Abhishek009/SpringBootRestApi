@@ -6,4 +6,5 @@ Maven https://maven.apache.org/
 STS https://spring.io/tools
 
 Run Spring Boot application
-mvn spring-boot:run
+
+<code>mvn spring-boot:run</code>
