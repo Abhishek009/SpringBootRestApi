@@ -17,58 +17,58 @@ import com.api.model.User;
 import com.api.repository.UserRepository;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api")
 public class UserController {
-	
-	  @Autowired
-	  UserRepository userRepository;
 
-	  //Get the list of users
-	  @GetMapping("/users")
-	  public List<User> getAllUsers() {
-		  System.out.println(userRepository.count());
-	    return userRepository.findAll();
-	  }
-	  
-	  // Add a user
-	  @PostMapping("/addUser")
-	  public List<User> createUser(@RequestBody User user) {
-		  //System.out.println("About to create user");
-		  userRepository.save(user);
-	    return userRepository.findAll();
-	  }
-	  
-	  // Get the user based on the id
-	  @GetMapping("/getUser/{id}")
-	  public String getUserByID(@PathVariable long id) {
-		  System.out.println("About to create user:"+ id);
-		 
-	    return userRepository.findById(id).toString();
-	  }
-	  
-	  //Delete the user based on the id
-	  @GetMapping("/deleteUser/{id}")
-	  public String deleteUserById(@PathVariable long id) {
-		  String deletedRecord = userRepository.findById(id).toString();
-		  userRepository.deleteById(id);
-		 
-	    return "Record is removed"+deletedRecord;
-	  }
-	  
-	  //Update the user base on the id
-	  @PostMapping("/upadateUser/{id}")
-	  public ResponseEntity<?> updateUserById(@RequestBody User user, @PathVariable long id) {
-		  Optional<User> userData  = userRepository.findById(id);
-		  if(userData.isPresent()){
-			  User userToUpdate = userData.get();
-			  userToUpdate.setEmail(user.getEmail());
-			  userToUpdate.setFirstName(user.getFirstName());
-			  userToUpdate.setLastName(user.getLastName());
-			  return new ResponseEntity<>(userRepository.save(userToUpdate), HttpStatus.OK);
-		  }else {
-			  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		  }
-		 
-	   
-	  }
+	@Autowired
+	UserRepository userRepository;
+
+	// Get the list of users
+	@GetMapping("/users")
+	public List<User> getAllUsers() {
+		return userRepository.findAll();
+	}
+
+	// Add a user
+	@PostMapping("/addUser")
+	public List<User> createUser(@RequestBody User user) {
+		userRepository.save(user);
+		return userRepository.findAll();
+	}
+
+	// Get the user based on the id
+	@GetMapping("/getUser/{id}")
+	public String getUserByID(@PathVariable long id) {
+		return userRepository.findById(id).toString();
+	}
+
+	// Delete the user based on the id
+	@GetMapping("/deleteUser/{id}")
+	public ResponseEntity<HttpStatus> deleteUserById(@PathVariable long id) {
+		Optional<User> userData = userRepository.findById(id);
+		if (userData.isPresent()) {
+			userRepository.deleteById(userData.get().getId());
+			return new ResponseEntity<>(HttpStatus.OK);
+
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+	}
+
+	// Update the user base on the id
+	@PostMapping("/upadateUser/{id}")
+	public ResponseEntity<User> updateUserById(@RequestBody User user, @PathVariable long id) {
+		Optional<User> userData = userRepository.findById(id);
+		if (userData.isPresent()) {
+			User userToUpdate = userData.get();
+			userToUpdate.setEmail(user.getEmail());
+			userToUpdate.setFirstName(user.getFirstName());
+			userToUpdate.setLastName(user.getLastName());
+			return new ResponseEntity<>(userRepository.save(userToUpdate), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+	}
 }
