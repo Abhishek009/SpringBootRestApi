@@ -2,9 +2,10 @@
 Spring Boot - Building Rest API to perform CRUD operation
 
 Tools Used:
-Maven https://maven.apache.org/
-STS https://spring.io/tools
-
+<blockquote>
+<p><a href="https://maven.apache.org/">Maven </p>
+<p><a href="https://spring.io/tools">STS</p>  
+</blockquote>
 Run Spring Boot application
-
-<code>mvn spring-boot:run</code>
+<p>
+<code>mvn spring-boot:run</code></p>
